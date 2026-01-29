@@ -17,12 +17,16 @@
     app.use(cookieparser())
     
    app.use(cors({
-  origin: [
-    "http://localhost:5173", // dev
-    "https://streamify-frontend-ju8w5ou0p-shubham-singhs-projects-1e0255bf.vercel.app" // production
-  ],
+  origin: (origin, callback) => {
+    if (!origin || origin.includes("vercel.app") || origin.includes("localhost")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
+
     app.use("/api/auth",authRoutes)
     app.use("/api/users",userRoutes)
     app.use("/api/chat",charRoutes);
