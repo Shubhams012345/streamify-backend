@@ -49,7 +49,8 @@ exports.signup=async(req,res)=>{
          httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000,
           sameSite: "none",
-          secure: true
+          secure: true,
+          path: "/"
       })
        const {password:passwordHided,...safeuser}=newUser._doc
        
@@ -93,7 +94,8 @@ exports.login=async(req,res)=>{
          httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000,
          sameSite: "none",
-         secure: true
+         secure: true,
+         path: "/"
       })
       const { password:hiddenPassword, ...safeUser } = userExist._doc
 
@@ -112,10 +114,15 @@ exports.login=async(req,res)=>{
       })
     }
 }
-exports.logout=async(req,res)=>{
-    res.clearCookie("jwt")
-    res.status(200).json({
-      success:true,
-      message:"logout successful"
-    })
-}
+exports.logout = async (req, res) => {
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    sameSite: "none",
+    secure: true
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "logout successful"
+  });
+};
