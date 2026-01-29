@@ -16,10 +16,13 @@
     app.use(express.json())
     app.use(cookieparser())
     
-    app.use(cors({
-        origin:"http://localhost:5173",
-        credentials:true
-    }))
+   app.use(cors({
+  origin: [
+    "http://localhost:5173", // dev
+    "https://streamify-frontend-ju8w5ou0p-shubham-singhs-projects-1e0255bf.vercel.app" // production
+  ],
+  credentials: true
+}));
     app.use("/api/auth",authRoutes)
     app.use("/api/users",userRoutes)
     app.use("/api/chat",charRoutes);
