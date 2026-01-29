@@ -117,8 +117,9 @@ exports.login=async(req,res)=>{
 exports.logout = async (req, res) => {
   res.clearCookie("jwt", {
     httpOnly: true,
+    secure: true,
     sameSite: "none",
-    secure: true
+    path: "/"
   });
 
   res.status(200).json({
@@ -126,3 +127,4 @@ exports.logout = async (req, res) => {
     message: "logout successful"
   });
 };
+
