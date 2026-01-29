@@ -48,8 +48,8 @@ exports.signup=async(req,res)=>{
       res.cookie("jwt",token,{
          httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000,
-         sameSite:"lax",
-         secure:false
+          sameSite: "none",
+          secure: true
       })
        const {password:passwordHided,...safeuser}=newUser._doc
        
@@ -92,8 +92,8 @@ exports.login=async(req,res)=>{
       res.cookie("jwt",token,{
          httpOnly: true,
           maxAge: 7 * 24 * 60 * 60 * 1000,
-         sameSite:"lax",
-         secure:false
+         sameSite: "none",
+         secure: true
       })
       const { password:hiddenPassword, ...safeUser } = userExist._doc
 
