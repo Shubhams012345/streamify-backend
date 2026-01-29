@@ -1,41 +1,49 @@
-    const express=require("express")
-    const dotenv=require("dotenv")
-    const authRoutes=require("./routes/authroutes")
-    const userRoutes=require('./routes/userRoutes')
-    const charRoutes=require('./routes/chatRoutes')
-    const cookieparser=require('cookie-parser')
-    const {connect}=require('./lib/db')
-    const cors=require('cors')
-    
-    dotenv.config();
-    const app=express()
-    console.log("ENV PORT =", process.env.PORT);
+const express = require("express")
+const dotenv = require("dotenv")
+const authRoutes = require("./routes/authroutes")
+const userRoutes = require('./routes/userRoutes')
+const charRoutes = require('./routes/chatRoutes')
+const cookieparser = require('cookie-parser')
+const { connect } = require('./lib/db')
+const cors = require('cors')
 
-    const PORT=process.env.PORT ||5001;
+dotenv.config()
+const app = express()
 
-    app.use(express.json())
-    app.use(cookieparser())
-    
-   app.use(cors({
+console.log("ENV PORT =", process.env.PORT)
+
+const PORT = process.env.PORT || 5001
+
+app.use(express.json())
+app.use(cookieparser())
+
+app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || origin.includes("vercel.app") || origin.includes("localhost")) {
-      callback(null, true);
+    if (
+      !origin ||
+      origin.includes("vercel.app") ||
+      origin.includes("localhost")
+    ) {
+      callback(null, true)
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error("Not allowed by CORS"))
     }
   },
-  credentials: true
-}));
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}))
 
-    app.use("/api/auth",authRoutes)
-    app.use("/api/users",userRoutes)
-    app.use("/api/chat",charRoutes);
+app.use("/api/auth", authRoutes)
+app.use("/api/users", userRoutes)
+app.use("/api/chat", charRoutes)
 
-    app.get("/",(req,res)=>{
-        res.send("hello world");
-    })
-    
-    connect();
-    app.listen(PORT,()=>{
-        console.log(`server is running on ${PORT}`)
-    })
+app.get("/", (req, res) => {
+  res.send("hello world")
+})
+
+connect()
+
+app.listen(PORT, () => {
+  console.log(`server is running on ${PORT}`)
+})
